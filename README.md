@@ -5,22 +5,24 @@ Created in search of the fastest and concise JavaScript templating function with
 doT.js is fast, small and has no dependencies.
 
 See [jsperf benchmarks](http://jsperf.com/hadlebars-vs-hogan-vs-mustache/2)
-for a more fair comparison (encodes HTML values).
+for an equal playground (encodes HTML values) comparison.
 
 ## Features
 
-custom delimiters
-runtime evaluation
-runtime interpolation
-compile-time evaluation
-partials support
-conditionals support
-array iterators
-object iterators
-encoding
-control whitespace - strip or preserve
-streaming friendly
-use it as logic-less or with logic, it is up to you
+* custom delimiters
+* runtime evaluation
+* runtime interpolation
+* compile-time evaluation
+* partials support
+* conditionals support
+* array iterator
+* encoding
+* control whitespace - strip or preserve
+* streaming friendly
+* use it as logic-less or with logic, it is up to you
+* ! coffeescript block
+* ! comment
+* ! object iterator
 
 [original doT playground](http://olado.github.com/doT)
 
@@ -37,7 +39,11 @@ To get meaningful errors, set `dot.templateSettings`
 
 ## New Features
 
-CoffeeScript blocks (most logic should stay outside of template).
+Comments
+
+    {{-- This is a comment }}
+
+CoffeeScript blocks
 
     {{`cs
         a = it?.prop || 'default'
@@ -45,13 +51,9 @@ CoffeeScript blocks (most logic should stay outside of template).
 
 Object iterator
 
-    {{. anObject :value :key }}
-        {{=key}} = {{=value}}
+    {{. it.fruits :value :key }}
+        {{= key}} = {{= value}}
     {{.}}
-
-Comments
-
-    {{-- This is a comment }}
 
 
 ## License
