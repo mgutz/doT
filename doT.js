@@ -8,8 +8,9 @@
 	"use strict";
 
 	var doT = {
-		version: '0.2.0',
+		version: '0.2.0-mgutz',
 		templateSettings: {
+			comment:    /\{\{--([\s\S]+?)\}\}/g,
 			evaluate:    /\{\{([\s\S]+?)\}\}/g,
 			interpolate: /\{\{=([\s\S]+?)\}\}/g,
 			encode:      /\{\{!([\s\S]+?)\}\}/g,
@@ -88,6 +89,7 @@
 		str = ("var out='" + (c.strip ? str.replace(/(^|\r|\n)\t* +| +\t*(\r|\n|$)/g,' ')
 					.replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g,''): str)
 			.replace(/'|\\/g, '\\$&')
+			.replace(c.comment, '')
 			.replace(c.interpolate || skip, function(m, code) {
 				return cse.start + unescape(code) + cse.end;
 			})
