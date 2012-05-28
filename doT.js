@@ -137,11 +137,14 @@ catch (err) {}
       str = "var __dotEncodeHTML=(" + encodeHTMLSource.toString() + "());" + str;
     }
     try {
+      // note that this only slows down compilation. c.strip should be
+      // set to true for production. this helps with debugging!
       if (!c.strip && jsp) {
         var ast = jsp.parse(str);
         str = pro.gen_code(ast, {beautify: true, indent_level: 2});
+        str += "\n";
       }
-      str += ";return out;";
+      str += "return out;";
       return new Function(c.varname, str);
     } catch (e) {
       if (typeof console !== 'undefined') console.log("Could not create a template function: " + str);
