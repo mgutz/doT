@@ -1,0 +1,19 @@
+{
+  "author": "Laura Doktorova",
+  "name": "doT-mgutz",
+  "description": "Fast concise JavaScript template engine.",
+  "version": "0.2.0-mgutz",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mgutz/doT.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "uglify-js": ""
+  },
+
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

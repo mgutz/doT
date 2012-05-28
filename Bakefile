@@ -1,0 +1,6 @@
+PATH=node_modules/uglify-js/bin:$PATH
+
+#. Minifies the doT.js
+function build {
+    uglifyjs -o doT.min.js doT.js
+}
