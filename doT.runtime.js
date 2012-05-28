@@ -6,6 +6,6 @@ function encodeHTMLSource() {
     return code ? code.toString().replace(matchHTML, function(m) {return encodeHTMLRules[m] || m;}) : code;
   };
 }
-if (typeof window === 'undefined')  global.__dotEncodeHtml = encodeHTMLSource()
+if (typeof window === 'undefined')  global.__dotEncodeHTML = encodeHTMLSource()
 else window.__dotEncodeHTML = encodeHTMLSource();
 })();

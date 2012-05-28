@@ -1,11 +1,12 @@
 // doT.js
 // 2011, Laura Doktorova, https://github.com/olado/doT
+// 2012, Mario Gutierrez, https://github.com/mgutz/doT
 //
 // doT.js is an open source component of http://bebedo.com
 // Licensed under the MIT license.
 //
 
-var coffeescirpt, jsp, pro;
+var coffeescript, jsp, pro;
 try {
   coffeescript = require('coffee-script');
   jsp = require('uglify-js').parser;
@@ -28,6 +29,7 @@ catch (err) {}
       define:      /\{\{##\s*([\w\.$]+)\s*(\:|=)([\s\S]+?)#\}\}/g,
       conditional: /\{\{\?(\?)?\s*([\s\S]*?)\s*\}\}/g,
       iterate:     /\{\{~\s*(?:\}\}|([\s\S]+?)\s*\:\s*([\w$]+)\s*(?:\:\s*([\w$]+))?\s*\}\})/g,
+      oiterate:    /\{\{\.\s*(?:\}\}|([\s\S]+?)\s*\:\s*([\w$]+)\s*(?:\:\s*([\w$]+))?\s*\}\})/g,
       varname: 'it',
       strip: true,
       append: true,
@@ -99,10 +101,6 @@ catch (err) {}
     str = ("var out='" + (c.strip ? str.replace(/(^|\r|\n)\t* +| +\t*(\r|\n|$)/g,' ')
           .replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g,''): str)
       .replace(/'|\\/g, '\\$&')
-      .replace(c.encode || skip, function(m, code) {
-        needhtmlencode = true;
-        return cse.startencode + unescape(code) + cse.end;
-      })
       .replace(c.comment, '')
       .replace(c.coffee || skip, function(m, code) {
         if (coffeescript) {
@@ -110,6 +108,9 @@ catch (err) {}
           return "';" + unescape(code) + "out+='";
         }
         else return code;
+      })
+      .replace(c.interpolate || skip, function(m, code) {
+        return cse.start + unescape(code) + cse.end;
       })
       .replace(c.conditional || skip, function(m, elsecase, code) {
         return elsecase ?
@@ -122,11 +123,24 @@ catch (err) {}
         return "';var arr"+sid+"="+iterate+";if(arr"+sid+"){var "+vname+","+indv+"=-1,l"+sid+"=arr"+sid+".length-1;while("+indv+"<l"+sid+"){"
           +vname+"=arr"+sid+"["+indv+"+=1];out+='";
       })
+      .replace(c.oiterate || skip, function(m, iterate, valueName, keyName) {
+        if (!iterate) return "';} } out+='";
+        sid += 1;
+        var obj = iterate + sid;
+        keyName = keyName || "i"+sid;
+        iterate=unescape(iterate);
+
+        return "';var "+keyName+","+valueName+","+obj+"="+iterate+";" +
+          "if("+obj+"){" +
+            "for("+keyName+" in "+obj+"){" +
+              valueName+"="+obj+"["+keyName+"];out+='";
+      })
       .replace(c.evaluate || skip, function(m, code) {
         return "';" + unescape(code) + "out+='";
       })
-      .replace(c.interpolate || skip, function(m, code) {
-        return cse.start + unescape(code) + cse.end;
+      .replace(c.encode || skip, function(m, code) {
+        needhtmlencode = true;
+        return cse.startencode + unescape(code) + cse.end;
       })
       + "';")
       .replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r')
