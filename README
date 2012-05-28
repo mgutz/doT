@@ -1,6 +1,7 @@
 Created in search of the fastest and concise JavaScript templating function with emphasis on performance under V8 and nodejs. It shows great performance for both nodejs and browsers.
 
-doT.js is fast, small and has no dependencies.
+doT.js is fast, small and has no dependencies. See [jsperf benchmarks](http://jsperf.com/hadlebars-vs-hogan-vs-mustache/2)
+which encodes HTML values.
 
 Features:
     custom delimiters
@@ -10,6 +11,7 @@ Features:
     partials support
     conditionals support
     array iterators
+    object iterators
     encoding
     control whitespace - strip or preserve
     streaming friendly
@@ -17,10 +19,6 @@ Features:
 
 Docs, live playground and samples:
     http://olado.github.com/doT
-
-Note about doU.js:
-    doU.js is here only so that legacy external tests do not break. Use doT.js.
-    doT.js with doT.templateSettings.append=false provides the same performance as doU.js.
 
 License:
     doT is an open source component of http://bebedo.com
