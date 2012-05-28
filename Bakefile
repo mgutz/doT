@@ -3,4 +3,5 @@ PATH=node_modules/uglify-js/bin:$PATH
 #. Minifies doT.js
 function build {
     uglifyjs -o doT.min.js doT.js
+    uglifyjs -o doT.runtime.min.js doT.runtime.js
 }
