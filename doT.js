@@ -19,7 +19,7 @@ catch (err) {}
   var doT = {
     version: '0.2.0-mgutz',
     templateSettings: {
-      coffee:      /\{\{:coffee:([\s\S]+?)\}\}/g,
+      coffee:      /\{\{`cs([\s\S]+?)\}\}/g,
       comment:     /\{\{--([\s\S]+?)\}\}/g,
       evaluate:    /\{\{([\s\S]+?)\}\}/g,
       interpolate: /\{\{=([\s\S]+?)\}\}/g,
@@ -111,10 +111,6 @@ catch (err) {}
         }
         else return code;
       })
-
-      .replace(c.interpolate || skip, function(m, code) {
-        return cse.start + unescape(code) + cse.end;
-      })
       .replace(c.conditional || skip, function(m, elsecase, code) {
         return elsecase ?
           (code ? "';}else if(" + unescape(code) + "){out+='" : "';}else{out+='") :
@@ -129,6 +125,9 @@ catch (err) {}
       .replace(c.evaluate || skip, function(m, code) {
         return "';" + unescape(code) + "out+='";
       })
+      .replace(c.interpolate || skip, function(m, code) {
+        return cse.start + unescape(code) + cse.end;
+      })
       + "';")
       .replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r')
       .replace(/(\s|;|}|^|{)out\+='';/g, '$1').replace(/\+''/g, '')
@@ -141,7 +140,6 @@ catch (err) {}
       if (!c.strip && jsp) {
         var ast = jsp.parse(str);
         str = pro.gen_code(ast, {beautify: true, indent_level: 2});
-        console.log(str);
       }
       str += ";return out;";
       return new Function(c.varname, str);
